@@ -1,0 +1,7 @@
+Full Name,Email Address,Phone Number,City,Created Time,Ad Name,Campaign Name,Lead Status
+John Doe,john.doe@example.com,+919876543210,Mumbai,2026-01-15 10:30:00,Summer Sale,Brand Awareness,Hot Lead
+Sarah Johnson,sarah.j@example.com,+919876543211,Bangalore,2026-01-16 11:00:00,Winter Campaign,Retargeting,Interested
+Rajesh Patel,rajesh.p@example.com,+919876543212,Delhi,2026-01-17 09:45:00,Product Launch,New Customers,No Answer
+Priya Singh,priya.s@example.com,+919876543213,Pune,2026-01-18 14:20:00,Flash Sale,Holiday Special,Converted
+Amit Kumar,,+919876543214,Chennai,2026-01-19 16:00:00,Brand Ad,Awareness,Not Interested
+,invalid-no-contact,,Jaipur,2026-01-20 10:00:00,Test Ad,Test,Unknown
