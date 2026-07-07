@@ -61,18 +61,32 @@ app.all('*', (req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-const server = app.listen(config.port, () => {
-  console.log(`\n🚀 GrowEasy CSV Importer API running on port ${config.port} in ${config.env} mode`);
-  console.log(`📋 Health check: http://localhost:${config.port}/api/health\n`);
-});
+let server;
+if (process.env.NODE_ENV !== "production") {
+  server = app.listen(config.port, () => {
+    console.log(
+      `\n🚀 GrowEasy CSV Importer API running on port ${config.port} in ${config.env} mode`
+    );
+    console.log(
+      `📋 Health check: http://localhost:${config.port}/api/health\n`
+    );
+  });
+}
+
+// Export for serverless environments (like Vercel)
+module.exports = app;
 
 // Graceful Shutdown Handler
 const gracefulShutdown = () => {
-  console.log('SIGTERM/SIGINT received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('Process terminated!');
+  console.log("SIGTERM/SIGINT received. Shutting down gracefully...");
+  if (server) {
+    server.close(() => {
+      console.log("Process terminated!");
+      process.exit(0);
+    });
+  } else {
     process.exit(0);
-  });
+  }
 };
 
 process.on('SIGTERM', gracefulShutdown);
@@ -81,7 +95,11 @@ process.on('SIGINT', gracefulShutdown);
 process.on('unhandledRejection', (err) => {
   console.error('UNHANDLED REJECTION! 💥 Shutting down...');
   console.error(err.name, err.message);
-  server.close(() => {
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  } else {
     process.exit(1);
-  });
+  }
 });
