@@ -6,7 +6,17 @@ class ApiError extends Error {
   }
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+const getApiBase = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+    return "/api"; // Use Vercel rewrite
+  }
+  return "http://localhost:3001/api";
+};
+
+const API_BASE = getApiBase();
 
 /**
  * Uploads a CSV file to the backend and returns AI-extracted CRM records.
