@@ -1,9 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const importController = require("../controllers/import.controller");
-
 const router = express.Router();
-
 // Configure multer for memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -20,7 +18,6 @@ const upload = multer({
     }
   },
 });
-
 router.post("/import", upload.single("file"), importController.handleImport);
 
 module.exports = router;

@@ -23,9 +23,6 @@ class AiProvider {
 
 const aiProvider = new AiProvider();
 
-/**
- * Splits an array into batches of specified size.
- */
 function splitIntoBatches(array, batchSize) {
   const batches = [];
   for (let i = 0; i < array.length; i += batchSize) {
@@ -33,11 +30,6 @@ function splitIntoBatches(array, batchSize) {
   }
   return batches;
 }
-
-/**
- * Parses the AI response text into structured JSON.
- * Handles cases where the AI wraps the JSON in markdown code blocks.
- */
 function parseAIResponse(responseText) {
   let cleaned = responseText.trim();
 
@@ -64,10 +56,6 @@ function parseAIResponse(responseText) {
     throw new Error(`Failed to parse AI response as JSON: ${e.message}`);
   }
 }
-
-/**
- * Processes a single batch of records through Gemini AI.
- */
 async function processBatch(
   modelName,
   headers,
@@ -116,10 +104,6 @@ async function processBatch(
 
   return result;
 }
-
-/**
- * Main extraction function: processes all CSV records through AI in batches.
- */
 async function extractCrmRecords(headers, records) {
   const modelName = config.geminiModel;
 
@@ -140,13 +124,9 @@ async function extractCrmRecords(headers, records) {
         i,
         batches.length
       );
-
-      // Process extracted records
       if (result.records && Array.isArray(result.records)) {
         for (const record of result.records) {
           const sanitized = validateRecord(record);
-
-          // Double-check: skip records without contact info
           if (hasContactInfo(sanitized)) {
             allRecords.push(sanitized);
           } else {
@@ -158,8 +138,6 @@ async function extractCrmRecords(headers, records) {
           }
         }
       }
-
-      // Process skipped records
       if (result.skipped && Array.isArray(result.skipped)) {
         for (const skipped of result.skipped) {
           allSkipped.push({
@@ -175,8 +153,6 @@ async function extractCrmRecords(headers, records) {
       );
     } catch (error) {
       console.error(`  ❌ Batch ${i + 1} failed after retries:`, error.message);
-
-      // Mark all records in this batch as skipped
       for (let j = 0; j < batches[i].length; j++) {
         allSkipped.push({
           rowIndex: i * config.batchSize + j + 1,
@@ -186,7 +162,6 @@ async function extractCrmRecords(headers, records) {
       }
     }
   }
-
   return { records: allRecords, skipped: allSkipped };
 }
 

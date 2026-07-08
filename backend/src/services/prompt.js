@@ -1,6 +1,3 @@
-/**
- * Returns the system prompt that instructs Gemini how to extract CRM records.
- */
 function getSystemPrompt() {
   return `You are an expert CRM Data Extraction Specialist for GrowEasy CRM.
 
@@ -99,9 +96,6 @@ Otherwise, leave as ""
 - Each record must remain a single logical row`;
 }
 
-/**
- * Builds the user prompt with the actual CSV data batch.
- */
 function buildBatchPrompt(headers, records, batchIndex, totalBatches) {
   const recordsJson = JSON.stringify(records, null, 2);
 
